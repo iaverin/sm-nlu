@@ -46,7 +46,8 @@ def match(s:str, pattern: list):
 
 phrases = list()
 
-with open('trigger_test.txt') as f:
+file_name = '2021-08-14__trigger_test.txt'
+with open(file_name) as f:
     phrases = f.readlines()
 print(f"Total Lines readed {len(phrases)}")
 
@@ -71,10 +72,10 @@ print(f'Total matches: {match_count}/{len(phrases)} Ratio:{round(match_count/len
 
 print("================")
 
-with open('_unmatched.txt', mode='w') as f:
+with open(file_name+'_unmatched.txt', mode='w') as f:
     f.writelines(unmatched)
 
-with open('_matched.txt', mode='w') as f:
+with open(file_name+'_matched.txt', mode='w') as f:
     f.writelines(matched)
 
 
