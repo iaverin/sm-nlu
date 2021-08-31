@@ -65,7 +65,7 @@ for i,phrase in enumerate(phrases):
         unmatched.append(phrase)
 
 
-print(f'Total matches: {match_count}/{len(phrases)}')
+print(f'Total matches: {match_count}/{len(phrases)} Ratio:{round(match_count/len(phrases),2)*100}%')
 
 print("================")
 
