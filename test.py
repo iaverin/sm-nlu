@@ -1,4 +1,4 @@
-print("hello world")
+print("Init...")
 import spacy
 from spacy.matcher import Matcher
 
@@ -22,6 +22,8 @@ pattern_stop = [[{"LEMMA":"отменить"}], [{"LEMMA":"оформлять"}]
 
 matcher.add("order_status", pattern)
 matcher.add("order_status_stop", pattern_stop)
+
+print("... done ")
 
 def match(s:str, pattern: list):
     doc = nlp(s)
