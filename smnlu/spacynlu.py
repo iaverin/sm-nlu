@@ -5,10 +5,6 @@ from typing import Counter, List, TypedDict, Union, Final
 import spacy
 from spacy.matcher import Matcher
 
-
-# class Intent(dataclasses):
-#     intent_id: TypedDict("Intent", {"id":str, "confidence":float })
-
 DEFAULT_CONTEXT = "global"
 
 
@@ -22,7 +18,6 @@ class Intent:
 
 
 class SpacyNlu:
-
     PATTERN_STOP_SUFFIX = "_int_stop"
 
     def __init__(self, model: str, intents: List[Intent]) -> None:
@@ -75,7 +70,6 @@ def _default_value_if_none(value, default_value):
     if value is None:
         return default_value
     return value
-
 
 # nlp = spacy.load("ru_core_news_sm")
 # matcher = Matcher(nlp.vocab)

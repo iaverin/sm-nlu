@@ -41,10 +41,7 @@ class SpacyNluTestSuite(unittest.TestCase):
 
         self.spacy_nlu = SpacyNlu("ru_core_news_sm", intents=self.intents)
 
-
-
     def test_intent(self):
-
         intent = self.spacy_nlu.intent(
             "Test this utterance for me. Test that.")
         self.assertEqual("test", intent.id)
@@ -80,15 +77,3 @@ class SpacyNluTestSuite(unittest.TestCase):
         self.assertEqual("seddo_in_global_and_ipsum_context", self.spacy_nlu.intent(self.seddo).id)
 
         self.assertEqual("seddo_in_global_and_ipsum_context", self.spacy_nlu.intent(self.seddo, contexts={'ipsum'}).id)
-
-
-
-
-
-
-
-
-
-
-
-
