@@ -9,7 +9,7 @@ from spacy.matcher import Matcher
 #     intent_id: TypedDict("Intent", {"id":str, "confidence":float })
 
 
-class Intent():
+class Intent:
 
     def __init__(self, id: str, patterns_match: List, patterns_stop: List):
         self.id = id
