@@ -9,29 +9,15 @@ from spacy.matcher import Matcher
 
 
 class Intent():
-    PATTERN_STOP_SUFFIX = "_int_stop"
 
     def __init__(self, id: str, patterns_match: List, patterns_stop: List):
         self.id = id
         self.patterns_match = patterns_match
         self.patterns_stop = patterns_stop
 
-    def match_pattern_id(self):
-        return self.id
-
-    def stop_patten_id(self):
-        return self.id+self.PATTERN_STOP_SUFFIX
-    
-    def fits_patterns(self, matched_patterns: List[str]) -> bool:
-        if self.match_pattern_id() in matched_patterns and \
-            self.stop_patten_id() not in matched_patterns:
-            return True
-        
-        return False
-
-
 
 class SpacyNlu:
+    PATTERN_STOP_SUFFIX = "_int_stop"
 
     def __init__(self, model: str, intents: List[Intent]) -> None:
         self.nlp = spacy.load(model)
@@ -41,15 +27,15 @@ class SpacyNlu:
     def intent(self, utterance: str) -> Union[Intent, None]:
         matched_patterns = self._get_matched_patterns(utterance)
         for intent in self.intents:
-            if intent.fits_patterns(matched_patterns):
+            if self._intent_fits_patterns(intent, matched_patterns):
                 return intent
         return None
 
     # private supplementary methods 
     def _init_intents(self, intents: List[Intent]) -> List[Intent]:
         for intent in intents:
-            self.matcher.add(intent.match_pattern_id(), intent.patterns_match)
-            self.matcher.add(intent.stop_patten_id(), intent.patterns_stop)
+            self.matcher.add(self._intent_match_pattern_id(intent), intent.patterns_match)
+            self.matcher.add(self._intent_stop_pattern_id(intent), intent.patterns_stop)
         return intents
     
     def _get_matched_patterns(self, utterance: str) -> list[str]:
@@ -62,6 +48,21 @@ class SpacyNlu:
                 matched_patterns.append(pattern_id)
 
         return matched_patterns
+    
+    def _intent_match_pattern_id(self, intent: Intent):
+        return intent.id
+    
+    def _intent_stop_pattern_id(self, intent: Intent):
+        return intent.id+self.PATTERN_STOP_SUFFIX
+
+    def _intent_fits_patterns(self, intent:Intent, matched_patterns: List[str]) -> bool:
+        if self._intent_match_pattern_id(intent) in matched_patterns and \
+            self._intent_stop_pattern_id(intent) not in matched_patterns:
+            return True
+        return False
+
+    
+
 
 
 
