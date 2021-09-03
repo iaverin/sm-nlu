@@ -4,8 +4,10 @@ import unittest
 
 class SpacyNluTestSuite(unittest.TestCase):
     def setUp(self):
+        self.lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+        self.seddo = "sed do eiusmod tempor incididunt ut labore et dolore magna alqua."
 
-        intents = [
+        self.intents = [
             Intent(
                 id="test",
                 patterns_match=[[{"lower": "test"}]],
@@ -15,11 +17,31 @@ class SpacyNluTestSuite(unittest.TestCase):
                 id="lorem_ipsum",
                 patterns_match=[[{"lower": "lorem"}]],
                 patterns_stop=[]
+            ),
+            Intent(
+                id="ipsum_single_lorem_context",
+                patterns_match=[[{"lower": "ipsum"}]],
+                patterns_stop=[],
+                contexts={'lorem'}
+            ),
+            Intent(
+                id="ipsum_with_dolor_and_sit_context",
+                patterns_match=[[{"lower": "ipsum"}]],
+                patterns_stop=[],
+                contexts={'dolor', 'sit'}
+            ),
+            Intent(
+                id='seddo_in_global_and_ipsum_context',
+                patterns_match=[[{"lower": "sed"}]],
+                patterns_stop=[],
+                contexts={'ipsum', 'global'}
             )
 
         ]
 
-        self.spacy_nlu = SpacyNlu("ru_core_news_sm", intents=intents)
+        self.spacy_nlu = SpacyNlu("ru_core_news_sm", intents=self.intents)
+
+
 
     def test_intent(self):
 
@@ -39,3 +61,34 @@ class SpacyNluTestSuite(unittest.TestCase):
 
         intent = self.spacy_nlu.intent("Blah blah blah")
         self.assertIsNone(intent)
+
+    def test_intent_with_context(self):
+        self.assertEqual("ipsum_single_lorem_context", self.spacy_nlu.intent(self.lorem, contexts={'lorem'}).id)
+
+        self.assertEqual("ipsum_with_dolor_and_sit_context", self.spacy_nlu.intent(self.lorem,
+                                                                                   contexts={'dolor', 'sit'}).id)
+
+        self.assertEqual("ipsum_with_dolor_and_sit_context", self.spacy_nlu.intent(self.lorem,
+                                                                                   contexts={'dolor'}).id)
+
+        self.assertEqual("ipsum_with_dolor_and_sit_context", self.spacy_nlu.intent(self.lorem,
+                                                                                   contexts={'sit'}).id)
+
+        self.assertEqual("ipsum_with_dolor_and_sit_context", self.spacy_nlu.intent(self.lorem,
+                                                                                   contexts={'sit'}).id)
+
+        self.assertEqual("seddo_in_global_and_ipsum_context", self.spacy_nlu.intent(self.seddo).id)
+
+        self.assertEqual("seddo_in_global_and_ipsum_context", self.spacy_nlu.intent(self.seddo, contexts={'ipsum'}).id)
+
+
+
+
+
+
+
+
+
+
+
+

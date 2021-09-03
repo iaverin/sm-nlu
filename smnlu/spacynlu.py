@@ -1,6 +1,7 @@
 from dataclasses import dataclass
+from enum import Enum
 
-from typing import Counter, List, TypedDict, Union
+from typing import Counter, List, TypedDict, Union, Final
 import spacy
 from spacy.matcher import Matcher
 
@@ -8,16 +9,20 @@ from spacy.matcher import Matcher
 # class Intent(dataclasses):
 #     intent_id: TypedDict("Intent", {"id":str, "confidence":float })
 
+DEFAULT_CONTEXT = "global"
+
 
 class Intent:
 
-    def __init__(self, id: str, patterns_match: List, patterns_stop: List):
+    def __init__(self, id: str, patterns_match: List, patterns_stop: List, contexts: set[str] = None):
         self.id = id
         self.patterns_match = patterns_match
         self.patterns_stop = patterns_stop
+        self.contexts: set = set(_default_value_if_none(contexts, {DEFAULT_CONTEXT}))
 
 
 class SpacyNlu:
+
     PATTERN_STOP_SUFFIX = "_int_stop"
 
     def __init__(self, model: str, intents: List[Intent]) -> None:
@@ -25,10 +30,12 @@ class SpacyNlu:
         self.matcher = Matcher(self.nlp.vocab)
         self.intents: List[Intent] = self._init_intents(intents)
 
-    def intent(self, utterance: str) -> Union[Intent, None]:
+    def intent(self, utterance: str, contexts: set[str] = None) -> Union[Intent, None]:
+        contexts_to_match = set(_default_value_if_none(contexts, {DEFAULT_CONTEXT}))
         matched_patterns = self._get_matched_patterns(utterance)
         for intent in self.intents:
-            if self._intent_fits_patterns(intent, matched_patterns):
+            if self._intent_fits_patterns(intent, matched_patterns) \
+                    and intent.contexts.intersection(contexts_to_match):
                 return intent
         return None
 
@@ -62,6 +69,13 @@ class SpacyNlu:
                 self._intent_stop_pattern_id(intent) not in matched_patterns:
             return True
         return False
+
+
+def _default_value_if_none(value, default_value):
+    if value is None:
+        return default_value
+    return value
+
 
 # nlp = spacy.load("ru_core_news_sm")
 # matcher = Matcher(nlp.vocab)

@@ -1,3 +1,5 @@
+# Intents config file
+
 from typing import List
 from smnlu.spacynlu import Intent
 
