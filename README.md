@@ -7,7 +7,7 @@ pip install -m requirements.txt
 python -m spacy download ru_core_news_sm # dsf
 ```
 git 
-# Using docker
-...
+# starting
+... to de done
  
  
