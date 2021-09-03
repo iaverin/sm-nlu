@@ -4,6 +4,7 @@ from typing import Counter, List, TypedDict, Union
 import spacy
 from spacy.matcher import Matcher
 
+
 # class Intent(dataclasses):
 #     intent_id: TypedDict("Intent", {"id":str, "confidence":float })
 
@@ -37,7 +38,7 @@ class SpacyNlu:
             self.matcher.add(self._intent_match_pattern_id(intent), intent.patterns_match)
             self.matcher.add(self._intent_stop_pattern_id(intent), intent.patterns_stop)
         return intents
-    
+
     def _get_matched_patterns(self, utterance: str) -> list[str]:
         doc = self.nlp(utterance)
         matches = self.matcher(doc)
@@ -48,23 +49,18 @@ class SpacyNlu:
                 matched_patterns.append(pattern_id)
 
         return matched_patterns
-    
+
     def _intent_match_pattern_id(self, intent: Intent):
         return intent.id
-    
-    def _intent_stop_pattern_id(self, intent: Intent):
-        return intent.id+self.PATTERN_STOP_SUFFIX
 
-    def _intent_fits_patterns(self, intent:Intent, matched_patterns: List[str]) -> bool:
+    def _intent_stop_pattern_id(self, intent: Intent):
+        return intent.id + self.PATTERN_STOP_SUFFIX
+
+    def _intent_fits_patterns(self, intent: Intent, matched_patterns: List[str]) -> bool:
         if self._intent_match_pattern_id(intent) in matched_patterns and \
-            self._intent_stop_pattern_id(intent) not in matched_patterns:
+                self._intent_stop_pattern_id(intent) not in matched_patterns:
             return True
         return False
-
-    
-
-
-
 
 # nlp = spacy.load("ru_core_news_sm")
 # matcher = Matcher(nlp.vocab)
