@@ -22,5 +22,5 @@ INTENTS: List[Intent] = [
     Intent(
         id="order_status",
         patterns_match=PATTERN_ORDER_STATUS,
-        patterns_stop=PATTERN_ORDER_STATUS_STOP)
+        patterns_stop=PATTERN_ORDER_STATUS_STOP),
 ]

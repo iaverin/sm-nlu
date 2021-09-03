@@ -50,6 +50,7 @@ class SpacyNlu:
 
         return matched_patterns
 
+    # probably bad smell
     def _intent_match_pattern_id(self, intent: Intent):
         return intent.id
 
