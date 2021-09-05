@@ -34,14 +34,14 @@ class InterfaceIntentPatternsMapping:
 
 
 class IntentPatternsWithDiscardMapping(InterfaceIntentPatternsMapping):
-    PATTERN_NAME_PREFIX = "_p_"
-    PATTERN_STOP_SUFFIX = "_p_stop_"
+    PATTERN_ID_MATCH_PREFIX = "_p_"
+    PATTERN_ID_DISCARD_PREFIX = "_p_stop_"
 
     def _pattern_id_to_match(self, intent: Intent) -> str:
-        return self.PATTERN_NAME_PREFIX + intent.id
+        return self.PATTERN_ID_MATCH_PREFIX + intent.id
 
     def _pattern_id_to_discard_matching(self, intent: Intent) -> str:
-        return self.PATTERN_STOP_SUFFIX + intent.id
+        return self.PATTERN_ID_DISCARD_PREFIX + intent.id
 
     def pattern_ids_from_intent(self, intent: Intent) -> List[Pattern]:
         return list([
