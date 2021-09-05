@@ -1,7 +1,5 @@
 from dataclasses import dataclass
-from enum import Enum
-import collections
-from typing import Counter, List, TypedDict, Union, Any
+from typing import  List,  Union, Iterable
 import spacy
 from spacy.matcher import Matcher
 
@@ -29,7 +27,7 @@ class InterfaceIntentPatternsMapping:
     def pattern_ids_from_intent(self, intent: Intent) -> List[Pattern]:
         pass
 
-    def intent_fits_patterns(self, intent: Intent, patterns: List[str]) -> bool:
+    def intent_fits_patterns(self, intent: Intent, patterns: Iterable[str]) -> bool:
         pass
 
 
@@ -48,7 +46,7 @@ class IntentPatternsWithDiscardMapping(InterfaceIntentPatternsMapping):
             Pattern(id=self._pattern_id_to_match(intent), pattern=intent.patterns_match),
             Pattern(id=self._pattern_id_to_discard_matching(intent), pattern=intent.patterns_discard)])
 
-    def intent_fits_patterns(self, intent: Intent, matched_patterns: List[str]) -> bool:
+    def intent_fits_patterns(self, intent: Intent, matched_patterns: Iterable[str]) -> bool:
         if self._pattern_id_to_match(intent) in matched_patterns and \
                 self._pattern_id_to_discard_matching(intent) not in matched_patterns:
             return True
@@ -83,10 +81,10 @@ class SpacyNlu:
             for pattern in patterns_to_add:
                 matcher.add(pattern.id, pattern.pattern)
 
-    def _get_matched_patterns(self, utterance: str) -> list[str]:
+    def _get_matched_patterns(self, utterance: str) -> set[str]:
         doc = self.nlp(utterance)
         matches = self.matcher(doc)
-        matched_patterns = list(set([self.nlp.vocab.strings[x[0]] for x in matches]))
+        matched_patterns = set([self.nlp.vocab.strings[x[0]] for x in matches])
 
         return matched_patterns
 
