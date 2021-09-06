@@ -64,10 +64,10 @@ def init(configuration, logger_to_use=None):
 
 
 def _format_log_string(user_id="", component="", event="", message=""):
-    decoded_msg = ""
+    decoded_msg = str()
 
     try:
-        decoded_msg = json.dumps(message, ensure_ascii=True)
+        decoded_msg = json.dumps(message, ensure_ascii=False)
 
     except:
         decoded_msg = message
