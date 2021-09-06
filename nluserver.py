@@ -29,7 +29,6 @@ def create_app():
 
     core.logger.info("")
     core.logger.info("================ sm-nlu server launched ==================")
-    core.logger.info("Привет")
 
     core.logger.info(f'Language model:{LANGUAGE_MODEL}')
 
