@@ -1,4 +1,4 @@
-from smnlu.spacynlu import Intent, SpacyNlu
+from smnlu.spacynlu import Intent, SpacyNlu, IntentPatternsWithDiscardMapping
 import unittest
 
 
@@ -11,40 +11,38 @@ class SpacyNluTestSuite(unittest.TestCase):
             Intent(
                 id="test",
                 patterns_match=[[{"lower": "test"}]],
-                patterns_stop=[[{"lower": "error"}]]
+                patterns_discard=[[{"lower": "error"}]]
             ),
             Intent(
                 id="lorem_ipsum",
                 patterns_match=[[{"lower": "lorem"}]],
-                patterns_stop=[]
+                patterns_discard=[]
             ),
             Intent(
                 id="ipsum_single_lorem_context",
                 patterns_match=[[{"lower": "ipsum"}]],
-                patterns_stop=[],
+                patterns_discard=[],
                 contexts={'lorem'}
             ),
             Intent(
                 id="ipsum_with_dolor_and_sit_context",
                 patterns_match=[[{"lower": "ipsum"}]],
-                patterns_stop=[],
+                patterns_discard=[],
                 contexts={'dolor', 'sit'}
             ),
             Intent(
                 id='seddo_in_global_and_ipsum_context',
                 patterns_match=[[{"lower": "sed"}]],
-                patterns_stop=[],
+                patterns_discard=[],
                 contexts={'ipsum', 'global'}
             )
 
         ]
 
-        self.spacy_nlu = SpacyNlu("ru_core_news_sm", intents=self.intents)
-
-
+        self.spacy_nlu = SpacyNlu("ru_core_news_sm", intents=self.intents,
+                                  intent_patterns_matcher=IntentPatternsWithDiscardMapping())
 
     def test_intent(self):
-
         intent = self.spacy_nlu.intent(
             "Test this utterance for me. Test that.")
         self.assertEqual("test", intent.id)
@@ -80,15 +78,3 @@ class SpacyNluTestSuite(unittest.TestCase):
         self.assertEqual("seddo_in_global_and_ipsum_context", self.spacy_nlu.intent(self.seddo).id)
 
         self.assertEqual("seddo_in_global_and_ipsum_context", self.spacy_nlu.intent(self.seddo, contexts={'ipsum'}).id)
-
-
-
-
-
-
-
-
-
-
-
-
