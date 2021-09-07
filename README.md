@@ -4,10 +4,12 @@ Python: 3.9
 # Installation 
 ```
 pip install -m requirements.txt
-python -m spacy download ru_core_news_sm # dsf
+python -m spacy download ru_core_news_sm
 ```
-git 
+
 # starting
-... to de done
+waitress-serve --port 5005 --call cbserver:create_app
+
+
  
  
