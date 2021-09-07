@@ -1,0 +1,6 @@
+.devcontainer
+__pycache__
+.idea
+.vscode
+venv
+*.log
