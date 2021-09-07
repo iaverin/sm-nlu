@@ -1,11 +1,17 @@
 # Requirements 
 Python: 3.9 
 
+
 # Installation 
 ```
 pip install -m requirements.txt
 python -m spacy download ru_core_news_sm
 ```
+
+# Intents configuration
+
+Intents are configured with the ```intents.py``` file via spacy patterns matching rules 
+Reference: https://spacy.io/usage/rule-based-matching . 
 
 # Starting
  
