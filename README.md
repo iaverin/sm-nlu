@@ -11,6 +11,12 @@ python -m spacy download ru_core_news_sm
  
 ```
 waitress-serve --port 5005 --call nluserver:create_app
+
+```
+
+# Logs
+```
+nluserver.log
 ```
 
 # Docker 

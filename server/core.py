@@ -25,7 +25,7 @@ logger_config = {
 
         'file': {
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': 'smnlu.log',
+            'filename': 'nluserver.log',
             'formatter': 'default',
             'level': 'INFO',
             'encoding': 'UTF-8',
