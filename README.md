@@ -8,7 +8,7 @@ python -m spacy download ru_core_news_sm
 ```
 
 # starting
-waitress-serve --port 5005 --call cbserver:create_app
+waitress-serve --port 5005 --call nluserver:create_app
 
 
  
