@@ -1,12 +1,9 @@
-FROM python:3.9-alpine
+FROM python:3.9-slim-buster
 COPY requirements.txt /app/requirements.txt
 WORKDIR /app
-RUN apk update && apk add gcc python3-dev musl-dev
-RUN apk add g++
 RUN pip install -r requirements.txt
 # RUN pip install psycopg2-binary
 RUN pip install waitress
-RUN python -m spacy download ru_core_news_sm
 COPY . /app
 ARG ENVFILE
 # RUN mv $ENVFILE config.py
