@@ -1,0 +1,10 @@
+POST localhost:5005/intent
+Content-Type: application/json
+
+{"message": "Где заказ", "context":["global"]}
+
+###
+POST localhost:5005/intent
+Content-Type: application/json
+
+{"message": "x" }
