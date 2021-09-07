@@ -6,30 +6,21 @@ import json
 from smnlu.spacynlu import SpacyNlu, IntentPatternsWithDiscardMapping
 import intents
 
+# Language model for spacy
 LANGUAGE_MODEL = "ru_core_news_sm"
 
-config = None
+json.ensure_ascii = False
 
 
 def create_app():
-    global config
-
     app = Flask(__name__)
-
-    print("===========")
-
-    # todo: use Flask's native config loading
-
-    json.ensure_ascii = False
 
     dictConfig(core.logger_config)
     log = logging.getLogger("application")
 
-    core.init(config, log)
+    core.init(configuration=None, logger_to_use=log)
 
-    core.logger.info("")
     core.logger.info("================ sm-nlu server launched ==================")
-
     core.logger.info(f'Language model:{LANGUAGE_MODEL}')
 
     nlu = SpacyNlu(LANGUAGE_MODEL, intents.INTENTS, IntentPatternsWithDiscardMapping())
@@ -46,24 +37,24 @@ def create_app():
         request.get_json(force=True)
 
         text: str = request.json.get("text", "")
-        context = request.json.get("context", None)
+        context: set = set(request.json.get("context", []))
 
         core.log("", "SMNLU", "MESSAGE_RECEIVED", text)
 
-        intent = nlu.intent(text, context)
+        intent_from_text = nlu.intent(text, context)
 
-        if intent is not None:
+        if intent_from_text is not None:
             return Response(response=json.dumps({
                 "text": text,
-                "intent": intent.id,
-                "context": context}),
+                "intent": intent_from_text.id,
+                "context": list(context)}),
                 status=200,
                 mimetype="application/json")
 
         return Response(response=json.dumps({
             "text": text,
             "intent": None,
-            "context": context}),
+            "context": list(context)}),
             status=200,
             mimetype="application/json")
 
