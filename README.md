@@ -7,7 +7,7 @@ pip install -m requirements.txt
 python -m spacy download ru_core_news_sm
 ```
 
-# starting
+# Starting
  
 ```
 waitress-serve --port 5005 --call nluserver:create_app
