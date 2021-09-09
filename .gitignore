@@ -4,3 +4,6 @@ __pycache__
 .vscode
 venv
 **.log
+check
+lab/*
+!lab/run_test.py
